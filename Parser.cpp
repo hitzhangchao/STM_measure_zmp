@@ -151,16 +151,16 @@ int Parser::setCommand(unsigned char *command_data, int command_data_len)
         res = B3M_CMD_DATA_PLAY;
       } else if (command == B3M_CMD_READ_SENSOR){
         if (command_buf[3] != property.ID) break;
-				reply_byte = 13;
+        reply_byte = 13;
         reply[0] = reply_byte, reply[1] = 0x89, reply[2] = 0, reply[3] = property.ID;
         short ad1 = adc1.read_u16();
-        short ad2 = adc1.read_u16();
-        short ad3 = adc1.read_u16();
-        short ad4 = adc1.read_u16();
-				reply[ 4] = ad1 & 0xff; reply[ 5] = ad1 << 8;
-				reply[ 6] = ad2 & 0xff; reply[ 7] = ad2 << 8;
-				reply[ 8] = ad3 & 0xff; reply[ 9] = ad3 << 8;
-				reply[10] = ad4 & 0xff; reply[11] = ad4 << 8;
+        short ad2 = adc2.read_u16();
+        short ad3 = adc3.read_u16();
+        short ad4 = adc4.read_u16();
+        reply[ 4] = ad1 & 0xff; reply[ 5] = ad1 >> 8;
+        reply[ 6] = ad2 & 0xff; reply[ 7] = ad2 >> 8;
+        reply[ 8] = ad3 & 0xff; reply[ 9] = ad3 >> 8;
+        reply[10] = ad4 & 0xff; reply[11] = ad4 >> 8;
         reply[reply_byte - 1]  = 0;
         for(int i = 0; i < (reply_byte - 1); i ++) reply[reply_byte - 1] += reply[i];
         res = B3M_CMD_READ_SENSOR;

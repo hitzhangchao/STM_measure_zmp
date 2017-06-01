@@ -1,5 +1,5 @@
 // version { year, month, day, no }
-char version[4] = { 17, 04, 23, 1 };
+char version[4] = { 17, 06, 01, 1 };
 
 #include "mbed.h"
 #include "AS5600.h"
@@ -165,7 +165,9 @@ int main() {
         wait_ms(10);
       }
       led4 = 0;
-    }
+    } else if (command == B3M_CMD_READ_SENSOR){
+      led2 = led2 ^ 1;
+		}
     
     int address, data;
     int com_num = commnand_parser.getNextCommand(&address, &data);
