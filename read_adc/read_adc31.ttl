@@ -1,0 +1,18 @@
+connect '/C=1 /BAUD=115200'
+callmenu 54010  ; [KanjiCode] Recv: Shift_JIS
+callmenu 54110  ; [KanjiCode] Send: Shift_JIS
+
+getdir DIR
+changedir DIR
+
+pause 1
+
+while 1
+  setdebug 2
+  send $05$09$00$1F$2D
+  mpause 10
+  setdebug 0
+  dispstr 10 13
+  mpause 10
+endwhile
+end
