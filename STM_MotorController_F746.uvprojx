@@ -2080,6 +2080,16 @@
               <FilePath>RS485.h</FilePath>
             </File>
             <File>
+              <FileName>SoftwarePwmOut.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>SoftwarePwmOut.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>SoftwarePwmOut.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>SoftwarePwmOut.h</FilePath>
+            </File>
+            <File>
               <FileName>STM_BLDCMotor.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>STM_BLDCMotor.cpp</FilePath>

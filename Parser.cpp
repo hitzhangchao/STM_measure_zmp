@@ -9,6 +9,11 @@
 
 Property property;
 
+AnalogIn adc1(PC_4); 
+AnalogIn adc2(PC_5); 
+AnalogIn adc3(PB_0); 
+AnalogIn adc4(PB_1); 
+
 char property_size[sizeof(Property)];
 
 /*!
@@ -80,13 +85,13 @@ int Parser::setCommand(unsigned char *command_data, int command_data_len)
       command = command_buf[1];
       option = command_buf[2];
       if (command == B3M_CMD_WRITE){
-        res = B3M_CMD_WRITE;
         int count = command_buf[length - 2];
         int len = (length - 6) / count;
         int add = command_buf[length - 3];
         for(int i = 0; i < count; i ++){
           int index = 3 + i * len;
           if (command_buf[index] != property.ID) continue;
+          res = B3M_CMD_WRITE;
           unsigned char *p = (unsigned char *)&command_buf[index + 1];
           for(int j = 0; j < (len - 1);){
             int address = add + j;
@@ -144,7 +149,22 @@ int Parser::setCommand(unsigned char *command_data, int command_data_len)
       } else if (command == B3M_CMD_DATA_PLAY){
         if (command_buf[3] != property.ID) break;
         res = B3M_CMD_DATA_PLAY;
-      }
+      } else if (command == B3M_CMD_READ_SENSOR){
+        if (command_buf[3] != property.ID) break;
+				reply_byte = 13;
+        reply[0] = reply_byte, reply[1] = 0x89, reply[2] = 0, reply[3] = property.ID;
+        short ad1 = adc1.read_u16();
+        short ad2 = adc1.read_u16();
+        short ad3 = adc1.read_u16();
+        short ad4 = adc1.read_u16();
+				reply[ 4] = ad1 & 0xff; reply[ 5] = ad1 << 8;
+				reply[ 6] = ad2 & 0xff; reply[ 7] = ad2 << 8;
+				reply[ 8] = ad3 & 0xff; reply[ 9] = ad3 << 8;
+				reply[10] = ad4 & 0xff; reply[11] = ad4 << 8;
+        reply[reply_byte - 1]  = 0;
+        for(int i = 0; i < (reply_byte - 1); i ++) reply[reply_byte - 1] += reply[i];
+        res = B3M_CMD_READ_SENSOR;
+			}
       break;
     }
     for(int i = length; i < command_buf_len; i ++)

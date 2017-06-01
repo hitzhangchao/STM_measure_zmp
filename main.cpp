@@ -26,6 +26,7 @@ char version[4] = { 17, 04, 23, 1 };
 #define min(a, b) ((a) < (b) ? (a) : (b))
 
 #define USE_WAKEUP_MODE
+#define SENSOR_MODE
 
 extern Property property;
 
@@ -82,7 +83,9 @@ float rad2deg100(float rad){
 int initialize()
 {
   status.initial_angle = status.target_angle = as5600;   // read angle
+#ifndef SENSOR_MODE
   if (as5600.getError()) return -1;
+#endif
   status.is_servo_on = false;
   status.led_state = 0;
   status.led_count = 0;
